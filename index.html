@@ -3388,7 +3388,7 @@ const PropertyDetailPage = ({ property, onBack, onNavigateToBuyer }) => {
   const [skippedBuyerIds, setSkippedBuyerIds] = useState([]);
   const [outreachBuyerIds, setOutreachBuyerIds] = useState([]);
   const [buyerPanelTab, setBuyerPanelTab] = useState("preferences");
-  const [showFeatures, setShowFeatures] = useState(false);
+  const [showFeatures, setShowFeatures] = useState(property.status === "unlisted");
   const [showMatchingBuyers, setShowMatchingBuyers] = useState(true);
   const [showAggSignals, setShowAggSignals] = useState(property.status !== "unlisted");
   const matchCarouselRef = React.useRef(null);
@@ -3663,7 +3663,7 @@ const PropertyDetailPage = ({ property, onBack, onNavigateToBuyer }) => {
             >View more <ChevronRight style={{ width: 14, height: 14 }} /></button>}
           </div>
           {showMatchingBuyers && (
-          <div ref={matchCarouselRef} style={{ display: "flex", gap: 12, overflowX: "auto", paddingBottom: 4, scrollSnapType: "x mandatory", scrollBehavior: "smooth" }}>
+          <div ref={matchCarouselRef} style={{ display: "flex", gap: 12, overflowX: "auto", scrollbarWidth: "none", msOverflowStyle: "none", paddingBottom: 4, scrollSnapType: "x mandatory", scrollBehavior: "smooth" }}>
             {matches.map((m, idx) => {
               const isSkipped = skippedBuyerIds.includes(m.buyer.id);
               const MATCH_COLORS = { high: { bg: "#dcfce7", text: "#15803d", label: "High" }, medium: { bg: "#fef3c7", text: "#a16207", label: "Med" }, low: { bg: "#fee2e2", text: "#b91c1c", label: "Low" } };
@@ -3674,7 +3674,7 @@ const PropertyDetailPage = ({ property, onBack, onNavigateToBuyer }) => {
               const areaStr = b.areas.join(", ");
               if (isSkipped) {
                 return (
-                  <div key={b.id} style={{ minWidth: "calc(33.333% - 8px)", maxWidth: "calc(33.333% - 8px)", flex: "0 0 auto", backgroundColor: "#f8f8f8", borderRadius: 16, border: "1px dashed #e2e8f0", padding: 16, display: "flex", alignItems: "center", justifyContent: "center", scrollSnapAlign: "start", opacity: 0.6 }}>
+                  <div key={b.id} style={{ minWidth: 340, maxWidth: 340, flex: "0 0 auto", backgroundColor: "#f8f8f8", borderRadius: 16, border: "1px dashed #e2e8f0", padding: 16, display: "flex", alignItems: "center", justifyContent: "center", scrollSnapAlign: "start", opacity: 0.6 }}>
                     <div style={{ textAlign: "center" }}>
                       <span style={{ fontSize: "0.75rem", color: "#94a3b8", fontWeight: 500 }}>Skipped</span>
                       <div style={{ fontSize: "0.8125rem", color: "#94a3b8", marginTop: 4 }}>{b.name}</div>
@@ -3687,7 +3687,7 @@ const PropertyDetailPage = ({ property, onBack, onNavigateToBuyer }) => {
                 <div
                   key={b.id}
                   onClick={() => setSelectedMatchBuyerId(b.id)}
-                  style={{ minWidth: "calc(33.333% - 8px)", maxWidth: "calc(33.333% - 8px)", flex: "0 0 auto", backgroundColor: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 16, cursor: "pointer", transition: "box-shadow 0.15s", display: "flex", flexDirection: "column", gap: 10, scrollSnapAlign: "start", minHeight: 180 }}
+                  style={{ minWidth: 340, maxWidth: 340, flex: "0 0 auto", backgroundColor: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 16, cursor: "pointer", transition: "box-shadow 0.15s", display: "flex", flexDirection: "column", gap: 10, scrollSnapAlign: "start", minHeight: 180 }}
                   onMouseEnter={e => e.currentTarget.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)"}
                   onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
                 >
@@ -4194,7 +4194,7 @@ const PropertiesListPage = ({ onSelectProperty }) => {
         </div>
 
         {view === "tiles" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 12 }}>
             {paged.map(p => <PropertyTileCard key={p.id} property={p} onClick={() => onSelectProperty(p.id)} />)}
             {filtered.length === 0 && <div style={{ gridColumn: "1 / -1", padding: 40, textAlign: "center", fontSize: 14, color: "#94a3b8" }}>No properties match your filters</div>}
           </div>
@@ -4617,7 +4617,7 @@ function BuyersListPage({ onSelectBuyerForProperty, initialFullProfileBuyerId, o
 
             {/* ── TILE VIEW ── */}
             {view === "tiles" && (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 12 }}>
                 {filtered.map(b => <BuyerTile key={b.id} buyer={b} showIdealProperty={showIdealProperty} onSend={handleSend} onSkip={handleSkip} onCancel={handleStop} onSelectBuyer={setSelectedBuyerId} />)}
                 {filtered.length === 0 && <div style={{ gridColumn: "1 / -1", padding: 40, textAlign: "center", fontSize: 14, color: "#94a3b8" }}>No buyers match your filters</div>}
               </div>
